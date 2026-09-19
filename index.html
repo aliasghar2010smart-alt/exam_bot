@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <title>شبیه‌ساز آزمون</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family:
+                Tahoma,
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #062a66 0%,
+                    #0b4aa2 50%,
+                    #063274 100%
+                );
+
+            min-height: 100vh;
+            color: #152238;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 520px;
+            min-height: 100vh;
+            margin: auto;
+            padding: 14px;
+            padding-bottom: 25px;
+        }
+
+        /* =========================
+           صفحه شروع
+        ========================= */
+
+        .welcome {
+            min-height: calc(100vh - 40px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .welcome-card {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 28px;
+            padding: 30px 22px;
+            text-align: center;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        .logo {
+            width: 78px;
+            height: 78px;
+            margin: 0 auto 18px;
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #0b63d8,
+                    #063a91
+                );
+
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+
+            box-shadow:
+                0 12px 30px rgba(11, 78, 170, 0.3);
+        }
+
+        .welcome-card h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .welcome-card p {
+            color: #65748b;
+            line-height: 1.9;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .start-button {
+            width: 100%;
+            border: none;
+            border-radius: 17px;
+            padding: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0878ef,
+                    #064ba8
+                );
+
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+
+            box-shadow:
+                0 10px 25px rgba(5, 78, 170, 0.3);
+
+            cursor: pointer;
+        }
+
+        .start-button:active {
+            transform: scale(0.98);
+        }
+
+        /* =========================
+           محیط آزمون
+        ========================= */
+
+        .exam {
+            display: none;
+        }
+
+        .top-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            padding: 17px;
+            margin-bottom: 12px;
+
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.18);
+        }
+
+        .exam-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .exam-name {
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .question-number {
+            background: #eaf3ff;
+            color: #0757b9;
+            padding: 8px 11px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .info-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .info-box {
+            flex: 1;
+            background: #f5f8fc;
+            border-radius: 14px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .info-label {
+            color: #7b8798;
+            font-size: 10px;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .timer {
+            color: #0757b9;
+        }
+
+        /* نوار پیشرفت */
+
+        .progress-area {
+            margin-top: 13px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 7px;
+            background: #e9eef5;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 1%;
+            height: 100%;
+            background:
+                linear-gradient(
+                    90deg,
+                    #0878ef,
+                    #063f91
+                );
+            border-radius: 20px;
+            transition: width 0.3s ease;
+        }
+
+        /* =========================
+           کارت سؤال
+        ========================= */
+
+        .question-card {
+            background: white;
+            border-radius: 26px;
+            padding: 22px 18px;
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .question-label {
+            display: inline-block;
+            background: #edf5ff;
+            color: #0757b9;
+            padding: 7px 11px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 17px;
+            line-height: 2;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* =========================
+           گزینه‌ها
+        ========================= */
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            width: 100%;
+            border: 2px solid #e8edf4;
+            background: #fff;
+            border-radius: 17px;
+
+            padding: 14px 13px;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            text-align: right;
+            color: #26364d;
+
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .option:active {
+            transform: scale(0.985);
+        }
+
+        .option-number {
+            width: 35px;
+            height: 35px;
+            min-width: 35px;
+
+            border-radius: 11px;
+
+            background: #f0f4f9;
+            color: #607086;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .option-text {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .option.selected {
+            border-color: #0878ef;
+            background: #edf6ff;
+        }
+
+        .option.selected .option-number {
+            background: #0878ef;
+            color: white;
+        }
+
+        /* =========================
+           ابزارهای آزمون
+        ========================= */
+
+        .tools {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .tool-button {
+            border: none;
+            border-radius: 15px;
+            padding: 13px;
+
+            background: #f3f6fa;
+            color: #3d4e65;
+
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .tool-button.marked {
+            background: #fff5d9;
+            color: #9a6a00;
+        }
+
+        /* =========================
+           ناوبری
+        ========================= */
+
+        .navigation {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .nav-button {
+            border: none;
+            border-radius: 15px;
+            padding: 14px 8px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .previous {
+            background: #edf1f6;
+            color: #45566d;
+        }
+
+        .next {
+            background:
+                linear-gradient(
+                    135deg,
+                    #0878ef,
+                    #064ba8
+                );
+            color: white;
+        }
+
+        .finish {
+            margin-top: 10px;
+            width: 100%;
+
+            border: none;
+            border-radius: 15px;
+
+            padding: 14px;
+
+            background: #fff0f0;
+            color: #c43d3d;
+
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* =========================
+           دانلود
+        ========================= */
+
+        .downloads {
+            margin-top: 14px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .download-button {
+            border: none;
+            border-radius: 15px;
+            padding: 13px;
+
+            background: #eef6ff;
+            color: #0757b9;
+
+            font-size: 12px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        /* =========================
+           نتیجه
+        ========================= */
+
+        .result {
+            display: none;
+            min-height: calc(100vh - 40px);
+
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result-card {
+            width: 100%;
+            background: white;
+            border-radius: 28px;
+            padding: 28px 20px;
+            text-align: center;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        .result-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .result-card h2 {
+            margin-bottom: 20px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .result-item {
+            background: #f5f8fc;
+            border-radius: 15px;
+            padding: 15px 8px;
+        }
+
+        .result-item strong {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .result-item span {
+            font-size: 11px;
+            color: #748198;
+        }
+
+        /* =========================
+           موبایل
+        ========================= */
+
+        @media (max-width: 380px) {
+
+            .app {
+                padding: 10px;
+            }
+
+            .question-text {
+                font-size: 15px;
+            }
+
+            .option-text {
+                font-size: 13px;
+            }
+
+            .nav-button {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =========================
+         صفحه ورود
+    ========================= -->
+
+    <section class="welcome" id="welcome">
+
+        <div class="welcome-card">
+
+            <div class="logo">
+                🎓
+            </div>
+
+            <h1>
+                شبیه‌ساز آزمون
+            </h1>
+
+            <p>
+                قلمچی — مرحله ۱
+                <br>
+                ۷۰ سؤال • ۹۵ دقیقه
+                <br>
+                آماده‌ای؟
+            </p>
+
+            <button
+                class="start-button"
+                onclick="startExam()"
+            >
+                🚀 ورود به آزمون
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         محیط آزمون
+    ========================= -->
+
+    <section class="exam" id="exam">
+
+        <div class="top-card">
+
+            <div class="exam-title">
+
+                <div class="exam-name">
+                    📘 قلمچی — مرحله ۱
+                </div>
+
+                <div
+                    class="question-number"
+                    id="questionNumber"
+                >
+                    سؤال ۱ از ۷۰
+                </div>
+
+            </div>
+
+            <div class="info-row">
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        زمان باقی‌مانده
+                    </div>
+
+                    <div
+                        class="info-value timer"
+                        id="timer"
+                    >
+                        ۹۵:۰۰
+                    </div>
+
+                </div>
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        پاسخ داده‌شده
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="answered"
+                    >
+                        ۰
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="progress-area">
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+                        id="progress"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="question-card">
+
+            <div class="question-label">
+                سؤال
+            </div>
+
+            <div
+                class="question-text"
+                id="questionText"
+            >
+                متن سؤال
+            </div>
+
+            <div
+                class="options"
+                id="options"
+            >
+            </div>
+
+
+            <div class="tools">
+
+                <button
+                    class="tool-button"
+                    id="markButton"
+                    onclick="toggleMark()"
+                >
+                    ⭐ نشان‌گذاری
+                </button>
+
+                <button
+                    class="tool-button"
+                    onclick="clearAnswer()"
+                >
+                    🗑️ حذف پاسخ
+                </button>
+
+            </div>
+
+
+            <div class="navigation">
+
+                <button
+                    class="nav-button previous"
+                    onclick="previousQuestion()"
+                >
+                    ⬅️ قبلی
+                </button>
+
+                <button
+                    class="nav-button next"
+                    onclick="nextQuestion()"
+                >
+                    بعدی ➡️
+                </button>
+
+                <button
+                    class="nav-button previous"
+                    onclick="showQuestionList()"
+                >
+                    ☷ سؤالات
+                </button>
+
+            </div>
+
+
+            <div class="downloads">
+
+                <button
+                    class="download-button"
+                    onclick="downloadQuestions()"
+                >
+                    📥 دانلود سوالات
+                </button>
+
+                <button
+                    class="download-button"
+                    onclick="downloadAnswers()"
+                >
+                    📥 دانلود پاسخنامه
+                </button>
+
+            </div>
+
+
+            <button
+                class="finish"
+                onclick="finishExam()"
+            >
+                🏁 پایان آزمون
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         نتیجه
+    ========================= -->
+
+    <section
+        class="result"
+        id="result"
+    >
+
+        <div class="result-card">
+
+            <div class="result-icon">
+                🏆
+            </div>
+
+            <h2>
+                آزمون تمام شد
+            </h2>
+
+            <div class="result-grid">
+
+                <div class="result-item">
+                    <strong id="resultCorrect">
+                        ۰
+                    </strong>
+                    <span>
+                        پاسخ صحیح
+                    </span>
+                </div>
+
+                <div class="result-item">
+                    <strong id="resultWrong">
+                        ۰
+                    </strong>
+                    <span>
+                        پاسخ غلط
+                    </span>
+                </div>
+
+                <div class="result-item">
+                    <strong id="resultEmpty">
+                        ۰
+                    </strong>
+                    <span>
+                        بدون پاسخ
+                    </span>
+                </div>
+
+                <div class="result-item">
+                    <strong id="resultPercent">
+                        ۰٪
+                    </strong>
+                    <span>
+                        درصد
+                    </span>
+                </div>
+
+            </div>
+
+            <button
+                class="start-button"
+                onclick="location.reload()"
+            >
+                🔄 آزمون دوباره
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+    /*
+    ==========================================
+    داده‌های آزمون
+    ==========================================
+
+    فعلاً برای تست محیط، دو سؤال نمونه داریم.
+    بعداً سؤال‌های واقعی آزمون اینجا قرار می‌گیرند.
+    */
+
+    const questions = [
+
+        {
+            text: "نمونه سؤال ۱ آزمون",
+            options: [
+                "گزینه اول",
+                "گزینه دوم",
+                "گزینه سوم",
+                "گزینه چهارم"
+            ],
+            answer: 0
+        },
+
+        {
+            text: "نمونه سؤال ۲ آزمون",
+            options: [
+                "گزینه اول",
+                "گزینه دوم",
+                "گزینه سوم",
+                "گزینه چهارم"
+            ],
+            answer: 1
+        }
+
+    ];
+
+
+    /*
+    ==========================================
+    وضعیت آزمون
+    ==========================================
+    */
+
+    let currentQuestion = 0;
+
+    let answers = {};
+
+    let marked = new Set();
+
+    let timeLeft = 95 * 60;
+
+    let timerInterval = null;
+
+
+    /*
+    ==========================================
+    شروع آزمون
+    ==========================================
+    */
+
+    function startExam() {
+
+        document.getElementById("welcome").style.display = "none";
+
+        document.getElementById("exam").style.display = "block";
+
+        document.getElementById("result").style.display = "none";
+
+        currentQuestion = 0;
+
+        answers = {};
+
+        marked = new Set();
+
+        timeLeft = 95 * 60;
+
+        renderQuestion();
+
+        startTimer();
+
+    }
+
+
+    /*
+    ==========================================
+    نمایش سؤال
+    ==========================================
+    */
+
+    function renderQuestion() {
+
+        const q = questions[currentQuestion];
+
+        document.getElementById("questionNumber").innerText =
+            "سؤال " +
+            toPersianNumber(currentQuestion + 1) +
+            " از " +
+            toPersianNumber(70);
+
+        document.getElementById("questionText").innerText =
+            q.text;
+
+        const optionsBox =
+            document.getElementById("options");
+
+        optionsBox.innerHTML = "";
+
+        q.options.forEach(
+            (option, index) => {
+
+                const button =
+                    document.createElement("button");
+
+                button.className = "option";
+
+                if (answers[currentQuestion] === index) {
+                    button.classList.add("selected");
+                }
+
+                button.innerHTML =
+                    `
+                    <div class="option-number">
+                        ${toPersianNumber(index + 1)}
+                    </div>
+
+                    <div class="option-text">
+                        ${option}
+                    </div>
+                    `;
+
+                button.onclick = () => {
+
+                    answers[currentQuestion] = index;
+
+                    renderQuestion();
+
+                };
+
+                optionsBox.appendChild(button);
+
+            }
+        );
+
+
+        updateStats();
+
+    }
+
+
+    /*
+    ==========================================
+    وضعیت آزمون
+    ==========================================
+    */
+
+    function updateStats() {
+
+        const answered =
+            Object.keys(answers).length;
+
+        document.getElementById("answered").innerText =
+            toPersianNumber(answered);
+
+
+        const progress =
+            ((currentQuestion + 1) / 70) * 100;
+
+        document.getElementById("progress").style.width =
+            Math.min(progress, 100) + "%";
+
+
+        const markButton =
+            document.getElementById("markButton");
+
+        if (marked.has(currentQuestion)) {
+
+            markButton.innerText =
+                "⭐ نشان‌شده";
+
+            markButton.classList.add("marked");
+
+        } else {
+
+            markButton.innerText =
+                "⭐ نشان‌گذاری";
+
+            markButton.classList.remove("marked");
+
+        }
+
+    }
+
+
+    /*
+    ==========================================
+    سؤال بعدی
+    ==========================================
+    */
+
+    function nextQuestion() {
+
+        if (
+            currentQuestion <
+            questions.length - 1
+        ) {
+
+            currentQuestion++;
+
+            renderQuestion();
+
+        } else {
+
+            finishExam();
+
+        }
+
+    }
+
+
+    /*
+    ==========================================
+    سؤال قبلی
+    ==========================================
+    */
+
+    function previousQuestion() {
+
+        if (currentQuestion > 0) {
+
+            currentQuestion--;
+
+            renderQuestion();
+
+        }
+
+    }
+
+
+    /*
+    ==========================================
+    نشان‌گذاری
+    ==========================================
+    */
+
+    function toggleMark() {
+
+        if (marked.has(currentQuestion)) {
+
+            marked.delete(currentQuestion);
+
+        } else {
+
+            marked.add(currentQuestion);
+
+        }
+
+        updateStats();
+
+    }
+
+
+    /*
+    ==========================================
+    حذف پاسخ
+    ==========================================
+    */
+
+    function clearAnswer() {
+
+        delete answers[currentQuestion];
+
+        renderQuestion();
+
+    }
+
+
+    /*
+    ==========================================
+    تایمر
+    ==========================================
+    */
+
+    function startTimer() {
+
+        clearInterval(timerInterval);
+
+        updateTimer();
+
+        timerInterval = setInterval(
+            () => {
+
+                timeLeft--;
+
+                updateTimer();
+
+                if (timeLeft <= 0) {
+
+                    clearInterval(timerInterval);
+
+                    finishExam();
+
+                }
+
+            },
+            1000
+        );
+
+    }
+
+
+    function updateTimer() {
+
+        if (timeLeft < 0) {
+            timeLeft = 0;
+        }
+
+        const minutes =
+            Math.floor(timeLeft / 60);
+
+        const seconds =
+            timeLeft % 60;
+
+        document.getElementById("timer").innerText =
+            toPersianNumber(
+                String(minutes).padStart(2, "0")
+            )
+            +
+            ":"
+            +
+            toPersianNumber(
+                String(seconds).padStart(2, "0")
+            );
+
+    }
+
+
+    /*
+    ==========================================
+    پایان آزمون
+    ==========================================
+    */
+
+    function finishExam() {
+
+        clearInterval(timerInterval);
+
+        let correct = 0;
+
+        questions.forEach(
+            (q, index) => {
+
+                if (
+                    answers[index] ===
+                    q.answer
+                ) {
+
+                    correct++;
+
+                }
+
+            }
+        );
+
+
+        const answered =
+            Object.keys(answers).length;
+
+        const wrong =
+            answered - correct;
+
+        const empty =
+            70 - answered;
+
+        const percent =
+            (correct / 70) * 100;
+
+
+        document.getElementById("exam").style.display =
+            "none";
+
+        document.getElementById("result").style.display =
+            "flex";
+
+
+        document.getElementById("resultCorrect").innerText =
+            toPersianNumber(correct);
+
+        document.getElementById("resultWrong").innerText =
+            toPersianNumber(wrong);
+
+        document.getElementById("resultEmpty").innerText =
+            toPersianNumber(empty);
+
+        document.getElementById("resultPercent").innerText =
+            toPersianNumber(
+                Math.round(percent)
+            ) + "٪";
+
+    }
+
+
+    /*
+    ==========================================
+    فهرست سؤالات
+    ==========================================
+    */
+
+    function showQuestionList() {
+
+        let message =
+            "شماره سؤال فعلی: " +
+            (currentQuestion + 1) +
+            "\n\n";
+
+        message +=
+            "این بخش بعداً به فهرست کامل ۷۰ سؤال متصل می‌شود.";
+
+        alert(message);
+
+    }
+
+
+    /*
+    ==========================================
+    دانلود سوالات
+    ==========================================
+    */
+
+    function downloadQuestions() {
+
+        /*
+        آدرس فایل واقعی سوالات را بعداً اینجا قرار می‌دهیم.
+        */
+
+        alert(
+            "📥 فایل سوالات بعد از اتصال فایل آزمون فعال می‌شود."
+        );
+
+    }
+
+
+    /*
+    ==========================================
+    دانلود پاسخنامه
+    ==========================================
+    */
+
+    function downloadAnswers() {
+
+        /*
+        آدرس فایل واقعی پاسخنامه را بعداً اینجا قرار می‌دهیم.
+        */
+
+        alert(
+            "📥 فایل پاسخنامه بعد از قرار دادن پاسخنامه واقعی فعال می‌شود."
+        );
+
+    }
+
+
+    /*
+    ==========================================
+    تبدیل اعداد انگلیسی به فارسی
+    ==========================================
+    */
+
+    function toPersianNumber(value) {
+
+        const numbers = [
+            "۰",
+            "۱",
+            "۲",
+            "۳",
+            "۴",
+            "۵",
+            "۶",
+            "۷",
+            "۸",
+            "۹"
+        ];
+
+        return String(value).replace(
+            /\d/g,
+            digit => numbers[digit]
+        );
+
+    }
+
+</script>
+
+</body>
+</html>0
+
