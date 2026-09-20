@@ -1,1287 +1,977 @@
+0
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    >
-
-    <title>شبیه‌ساز آزمون</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            font-family:
-                Tahoma,
-                Arial,
-                sans-serif;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #062a66 0%,
-                    #0b4aa2 50%,
-                    #063274 100%
-                );
-
-            min-height: 100vh;
-            color: #152238;
-        }
-
-        button {
-            font-family: inherit;
-        }
-
-        .app {
-            width: 100%;
-            max-width: 520px;
-            min-height: 100vh;
-            margin: auto;
-            padding: 14px;
-            padding-bottom: 25px;
-        }
-
-        /* =========================
-           صفحه شروع
-        ========================= */
-
-        .welcome {
-            min-height: calc(100vh - 40px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .welcome-card {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 28px;
-            padding: 30px 22px;
-            text-align: center;
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.25);
-        }
-
-        .logo {
-            width: 78px;
-            height: 78px;
-            margin: 0 auto 18px;
-            border-radius: 24px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #0b63d8,
-                    #063a91
-                );
-
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 38px;
-
-            box-shadow:
-                0 12px 30px rgba(11, 78, 170, 0.3);
-        }
-
-        .welcome-card h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .welcome-card p {
-            color: #65748b;
-            line-height: 1.9;
-            font-size: 14px;
-            margin-bottom: 25px;
-        }
-
-        .start-button {
-            width: 100%;
-            border: none;
-            border-radius: 17px;
-            padding: 16px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #0878ef,
-                    #064ba8
-                );
-
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-
-            box-shadow:
-                0 10px 25px rgba(5, 78, 170, 0.3);
-
-            cursor: pointer;
-        }
-
-        .start-button:active {
-            transform: scale(0.98);
-        }
-
-        /* =========================
-           محیط آزمون
-        ========================= */
-
-        .exam {
-            display: none;
-        }
-
-        .top-card {
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 24px;
-            padding: 17px;
-            margin-bottom: 12px;
-
-            box-shadow:
-                0 12px 35px rgba(0, 0, 0, 0.18);
-        }
-
-        .exam-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .exam-name {
-            font-weight: bold;
-            font-size: 15px;
-        }
-
-        .question-number {
-            background: #eaf3ff;
-            color: #0757b9;
-            padding: 8px 11px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        .info-row {
-            display: flex;
-            gap: 8px;
-        }
-
-        .info-box {
-            flex: 1;
-            background: #f5f8fc;
-            border-radius: 14px;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .info-label {
-            color: #7b8798;
-            font-size: 10px;
-            margin-bottom: 5px;
-        }
-
-        .info-value {
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        .timer {
-            color: #0757b9;
-        }
-
-        /* نوار پیشرفت */
-
-        .progress-area {
-            margin-top: 13px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 7px;
-            background: #e9eef5;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            width: 1%;
-            height: 100%;
-            background:
-                linear-gradient(
-                    90deg,
-                    #0878ef,
-                    #063f91
-                );
-            border-radius: 20px;
-            transition: width 0.3s ease;
-        }
-
-        /* =========================
-           کارت سؤال
-        ========================= */
-
-        .question-card {
-            background: white;
-            border-radius: 26px;
-            padding: 22px 18px;
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .question-label {
-            display: inline-block;
-            background: #edf5ff;
-            color: #0757b9;
-            padding: 7px 11px;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .question-text {
-            font-size: 17px;
-            line-height: 2;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        /* =========================
-           گزینه‌ها
-        ========================= */
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .option {
-            width: 100%;
-            border: 2px solid #e8edf4;
-            background: #fff;
-            border-radius: 17px;
-
-            padding: 14px 13px;
-
-            display: flex;
-            align-items: center;
-            gap: 12px;
-
-            text-align: right;
-            color: #26364d;
-
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .option:active {
-            transform: scale(0.985);
-        }
-
-        .option-number {
-            width: 35px;
-            height: 35px;
-            min-width: 35px;
-
-            border-radius: 11px;
-
-            background: #f0f4f9;
-            color: #607086;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-weight: bold;
-            font-size: 13px;
-        }
-
-        .option-text {
-            font-size: 14px;
-            line-height: 1.7;
-        }
-
-        .option.selected {
-            border-color: #0878ef;
-            background: #edf6ff;
-        }
-
-        .option.selected .option-number {
-            background: #0878ef;
-            color: white;
-        }
-
-        /* =========================
-           ابزارهای آزمون
-        ========================= */
-
-        .tools {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 14px;
-        }
-
-        .tool-button {
-            border: none;
-            border-radius: 15px;
-            padding: 13px;
-
-            background: #f3f6fa;
-            color: #3d4e65;
-
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .tool-button.marked {
-            background: #fff5d9;
-            color: #9a6a00;
-        }
-
-        /* =========================
-           ناوبری
-        ========================= */
-
-        .navigation {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr 1fr;
-            gap: 8px;
-            margin-top: 14px;
-        }
-
-        .nav-button {
-            border: none;
-            border-radius: 15px;
-            padding: 14px 8px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .previous {
-            background: #edf1f6;
-            color: #45566d;
-        }
-
-        .next {
-            background:
-                linear-gradient(
-                    135deg,
-                    #0878ef,
-                    #064ba8
-                );
-            color: white;
-        }
-
-        .finish {
-            margin-top: 10px;
-            width: 100%;
-
-            border: none;
-            border-radius: 15px;
-
-            padding: 14px;
-
-            background: #fff0f0;
-            color: #c43d3d;
-
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* =========================
-           دانلود
-        ========================= */
-
-        .downloads {
-            margin-top: 14px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .download-button {
-            border: none;
-            border-radius: 15px;
-            padding: 13px;
-
-            background: #eef6ff;
-            color: #0757b9;
-
-            font-size: 12px;
-            font-weight: bold;
-
-            cursor: pointer;
-        }
-
-        /* =========================
-           نتیجه
-        ========================= */
-
-        .result {
-            display: none;
-            min-height: calc(100vh - 40px);
-
-            align-items: center;
-            justify-content: center;
-        }
-
-        .result-card {
-            width: 100%;
-            background: white;
-            border-radius: 28px;
-            padding: 28px 20px;
-            text-align: center;
-
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.25);
-        }
-
-        .result-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
-        }
-
-        .result-card h2 {
-            margin-bottom: 20px;
-        }
-
-        .result-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .result-item {
-            background: #f5f8fc;
-            border-radius: 15px;
-            padding: 15px 8px;
-        }
-
-        .result-item strong {
-            display: block;
-            font-size: 20px;
-            margin-bottom: 5px;
-        }
-
-        .result-item span {
-            font-size: 11px;
-            color: #748198;
-        }
-
-        /* =========================
-           موبایل
-        ========================= */
-
-        @media (max-width: 380px) {
-
-            .app {
-                padding: 10px;
-            }
-
-            .question-text {
-                font-size: 15px;
-            }
-
-            .option-text {
-                font-size: 13px;
-            }
-
-            .nav-button {
-                font-size: 11px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شبیه‌ساز آزمون</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #050d20;
+  --panel: #0b1830;
+  --panel-light: #112442;
+  --border: #20385d;
+  --text: #f0f4ff;
+  --muted: #91a1c0;
+  --blue: #397df6;
+  --purple: #7767ed;
+  --green: #14c98b;
+  --orange: #ffb95c;
+  --red: #f05270;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Vazirmatn", Tahoma, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 15% 15%, #182b59 0, transparent 30%),
+    radial-gradient(circle at 90% 80%, #101d43 0, transparent 35%),
+    var(--bg);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: .45;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  min-height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  padding: 25px 42px;
+  border-bottom: 1px solid #1a2b4b;
+  background: rgba(8, 19, 41, .92);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 250px;
+}
+
+.brand-icon {
+  font-size: 48px;
+  color: #8878ff;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.brand p {
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.exam-name {
+  min-width: 230px;
+  padding: 18px 25px;
+  border: 1px solid #29477b;
+  border-radius: 23px;
+  background: linear-gradient(135deg, #142b58, #0c1b38);
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.header-progress {
+  width: 225px;
+}
+
+.header-progress small {
+  display: block;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.progress-track {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #1b2e50;
+}
+
+.progress-value {
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #477bff, #45a2ff);
+  transition: width .3s;
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 17px 23px;
+  border: 1px solid #263d62;
+  border-radius: 22px;
+  min-width: 215px;
+}
+
+.timer-icon {
+  color: #64f2ef;
+  font-size: 38px;
+}
+
+.timer strong {
+  display: block;
+  font-size: 25px;
+  direction: ltr;
+  text-align: center;
+}
+
+.timer small {
+  color: var(--muted);
+}
+
+/* Main */
+.main {
+  display: grid;
+  grid-template-columns: 215px minmax(0, 1fr) 325px;
+  direction: ltr;
+  gap: 22px;
+  padding: 28px;
+  flex: 1;
+}
+
+.sidebar,
+.question-area,
+.question-list {
+  direction: rtl;
+}
+
+/* Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 19px 20px;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  color: #b9c6df;
+  background: transparent;
+  font-size: 16px;
+  text-align: right;
+  transition: .2s;
+}
+
+.nav-btn:hover {
+  background: #122542;
+}
+
+.nav-btn.active {
+  color: white;
+  background: linear-gradient(110deg, #5a5fe1, #2f70e8);
+  box-shadow: 0 8px 25px #1e4ca544;
+}
+
+.nav-icon {
+  font-size: 25px;
+}
+
+.motivation {
+  margin-top: auto;
+  padding: 22px 16px;
+  border: 1px solid #29456c;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #101f3b, #0b1730);
+  text-align: center;
+  color: #c8d4ec;
+  line-height: 2;
+}
+
+.motivation span {
+  display: block;
+  color: #ffca62;
+  font-size: 22px;
+}
+
+/* Question area */
+.question-area {
+  min-width: 0;
+  padding: 25px;
+  border: 1px solid #1c3458;
+  border-radius: 25px;
+  background: linear-gradient(145deg, #0b1b35, #081429);
+  box-shadow: 0 15px 50px #00000018;
+}
+
+.question-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.subject {
+  padding: 10px 20px;
+  border-radius: 16px;
+  color: #b8c8ff;
+  background: #162e59;
+  font-weight: 700;
+}
+
+.question-number {
+  padding: 10px 18px;
+  border-radius: 16px;
+  color: #d7e4ff;
+  background: #152944;
+}
+
+.question-card {
+  min-height: 290px;
+  padding: 28px;
+  border: 1px solid #29486e;
+  border-radius: 21px;
+  background: #09182d;
+}
+
+.question-text {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 2.2;
+  margin: 0 0 24px;
+}
+
+.question-image {
+  display: block;
+  max-width: 100%;
+  max-height: 260px;
+  margin: 20px auto;
+  border-radius: 12px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 22px;
+  border: 1px solid #294263;
+  border-radius: 17px;
+  color: #d8e2f5;
+  background: linear-gradient(110deg, #0d203b, #0a192f);
+  text-align: right;
+  font-size: 17px;
+  transition: .2s;
+}
+
+.option:hover {
+  border-color: #477ce4;
+  background: #122b4e;
+}
+
+.option.selected {
+  border-color: #6682ff;
+  background: linear-gradient(110deg, #253c80, #263064);
+}
+
+.option-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 31px;
+  height: 31px;
+  border: 2px solid #52698e;
+  border-radius: 50%;
+  color: #91a8cf;
+}
+
+.option.selected .option-letter {
+  border-color: #91a1ff;
+  color: white;
+  background: #596de6;
+}
+
+.bottom-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.action-btn {
+  border: 0;
+  border-radius: 22px;
+  padding: 17px 28px;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+}
+
+.next-btn {
+  background: linear-gradient(110deg, #437bff, #3269ee);
+}
+
+.previous-btn {
+  background: #172c4b;
+  color: #9eafd0;
+}
+
+.mark-btn {
+  color: #a9b9d6;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 15px;
+}
+
+.mark-btn.marked {
+  color: #ffc25e;
+}
+
+/* Question list */
+.question-list {
+  padding: 22px;
+  border: 1px solid #1c3458;
+  border-radius: 25px;
+  background: linear-gradient(145deg, #0b1b35, #081429);
+}
+
+.list-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #203654;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.grid-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin: 20px 0;
+  color: #aebbd4;
+  font-size: 13px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.legend-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+}
+
+.dot-answered {
+  background: var(--green);
+}
+
+.dot-current {
+  background: var(--purple);
+}
+
+.dot-unanswered {
+  background: #536784;
+}
+
+.dot-marked {
+  background: var(--orange);
+}
+
+.question-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 9px;
+  max-height: 410px;
+  overflow-y: auto;
+  padding: 3px;
+}
+
+.grid-btn {
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 10px;
+  color: #e4edff;
+  background: #1b2c47;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.grid-btn.answered {
+  background: var(--green);
+  color: #042b20;
+}
+
+.grid-btn.current {
+  background: var(--purple);
+  color: white;
+}
+
+.grid-btn.marked {
+  background: var(--orange);
+  color: #35200a;
+}
+
+.grid-btn.current.marked {
+  background: linear-gradient(135deg, var(--purple), var(--orange));
+}
+
+.list-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.list-action {
+  width: 100%;
+  padding: 17px;
+  border-radius: 17px;
+  border: 1px solid #496287;
+  color: #dce8ff;
+  background: transparent;
+  font-size: 15px;
+}
+
+.list-action:hover {
+  background: #172b49;
+}
+
+.finish-btn {
+  border: 0;
+  color: white;
+  background: linear-gradient(110deg, #13ae7d, #10c78a);
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 40px;
+  border-top: 1px solid #1b2d4b;
+  color: #8496b8;
+  font-size: 13px;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .header {
+    flex-wrap: wrap;
+    padding: 20px;
+  }
+
+  .main {
+    grid-template-columns: 180px minmax(0, 1fr);
+  }
+
+  .question-list {
+    grid-column: 1 / -1;
+  }
+
+  .question-grid {
+    grid-template-columns: repeat(10, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .header {
+    gap: 14px;
+  }
+
+  .brand {
+    min-width: auto;
+  }
+
+  .brand h1 {
+    font-size: 19px;
+  }
+
+  .brand-icon {
+    font-size: 35px;
+  }
+
+  .exam-name,
+  .header-progress {
+    display: none;
+  }
+
+  .timer {
+    min-width: auto;
+    padding: 10px;
+  }
+
+  .timer strong {
+    font-size: 18px;
+  }
+
+  .timer-icon {
+    font-size: 25px;
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+  }
+
+  .sidebar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+  }
+
+  .nav-btn {
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 3px;
+    font-size: 11px;
+    text-align: center;
+  }
+
+  .nav-icon {
+    font-size: 20px;
+  }
+
+  .motivation {
+    display: none;
+  }
+
+  .question-area {
+    padding: 14px;
+  }
+
+  .question-card {
+    padding: 18px;
+  }
+
+  .question-text {
+    font-size: 16px;
+  }
+
+  .option {
+    padding: 15px;
+    font-size: 14px;
+  }
+
+  .question-grid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+
+  .bottom-actions {
+    flex-wrap: wrap;
+  }
+
+  .footer {
+    padding: 15px;
+  }
+}
+</style>
 </head>
 
 <body>
-
 <div class="app">
 
-    <!-- =========================
-         صفحه ورود
-    ========================= -->
-
-    <section class="welcome" id="welcome">
-
-        <div class="welcome-card">
-
-            <div class="logo">
-                🎓
-            </div>
-
-            <h1>
-                شبیه‌ساز آزمون
-            </h1>
-
-            <p>
-                قلمچی — مرحله ۱
-                <br>
-                ۷۰ سؤال • ۹۵ دقیقه
-                <br>
-                آماده‌ای؟
-            </p>
-
-            <button
-                class="start-button"
-                onclick="startExam()"
-            >
-                🚀 ورود به آزمون
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         محیط آزمون
-    ========================= -->
-
-    <section class="exam" id="exam">
-
-        <div class="top-card">
-
-            <div class="exam-title">
-
-                <div class="exam-name">
-                    📘 قلمچی — مرحله ۱
-                </div>
-
-                <div
-                    class="question-number"
-                    id="questionNumber"
-                >
-                    سؤال ۱ از ۷۰
-                </div>
-
-            </div>
-
-            <div class="info-row">
-
-                <div class="info-box">
-
-                    <div class="info-label">
-                        زمان باقی‌مانده
-                    </div>
-
-                    <div
-                        class="info-value timer"
-                        id="timer"
-                    >
-                        ۹۵:۰۰
-                    </div>
-
-                </div>
-
-                <div class="info-box">
-
-                    <div class="info-label">
-                        پاسخ داده‌شده
-                    </div>
-
-                    <div
-                        class="info-value"
-                        id="answered"
-                    >
-                        ۰
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="progress-area">
-
-                <div class="progress-bar">
-
-                    <div
-                        class="progress-fill"
-                        id="progress"
-                    ></div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="question-card">
-
-            <div class="question-label">
-                سؤال
-            </div>
-
-            <div
-                class="question-text"
-                id="questionText"
-            >
-                متن سؤال
-            </div>
-
-            <div
-                class="options"
-                id="options"
-            >
-            </div>
-
-
-            <div class="tools">
-
-                <button
-                    class="tool-button"
-                    id="markButton"
-                    onclick="toggleMark()"
-                >
-                    ⭐ نشان‌گذاری
-                </button>
-
-                <button
-                    class="tool-button"
-                    onclick="clearAnswer()"
-                >
-                    🗑️ حذف پاسخ
-                </button>
-
-            </div>
-
-
-            <div class="navigation">
-
-                <button
-                    class="nav-button previous"
-                    onclick="previousQuestion()"
-                >
-                    ⬅️ قبلی
-                </button>
-
-                <button
-                    class="nav-button next"
-                    onclick="nextQuestion()"
-                >
-                    بعدی ➡️
-                </button>
-
-                <button
-                    class="nav-button previous"
-                    onclick="showQuestionList()"
-                >
-                    ☷ سؤالات
-                </button>
-
-            </div>
-
-
-            <div class="downloads">
-
-                <button
-                    class="download-button"
-                    onclick="downloadQuestions()"
-                >
-                    📥 دانلود سوالات
-                </button>
-
-                <button
-                    class="download-button"
-                    onclick="downloadAnswers()"
-                >
-                    📥 دانلود پاسخنامه
-                </button>
-
-            </div>
-
-
-            <button
-                class="finish"
-                onclick="finishExam()"
-            >
-                🏁 پایان آزمون
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         نتیجه
-    ========================= -->
-
-    <section
-        class="result"
-        id="result"
-    >
-
-        <div class="result-card">
-
-            <div class="result-icon">
-                🏆
-            </div>
-
-            <h2>
-                آزمون تمام شد
-            </h2>
-
-            <div class="result-grid">
-
-                <div class="result-item">
-                    <strong id="resultCorrect">
-                        ۰
-                    </strong>
-                    <span>
-                        پاسخ صحیح
-                    </span>
-                </div>
-
-                <div class="result-item">
-                    <strong id="resultWrong">
-                        ۰
-                    </strong>
-                    <span>
-                        پاسخ غلط
-                    </span>
-                </div>
-
-                <div class="result-item">
-                    <strong id="resultEmpty">
-                        ۰
-                    </strong>
-                    <span>
-                        بدون پاسخ
-                    </span>
-                </div>
-
-                <div class="result-item">
-                    <strong id="resultPercent">
-                        ۰٪
-                    </strong>
-                    <span>
-                        درصد
-                    </span>
-                </div>
-
-            </div>
-
-            <button
-                class="start-button"
-                onclick="location.reload()"
-            >
-                🔄 آزمون دوباره
-            </button>
-
-        </div>
-
-    </section>
+<header class="header">
+  <div class="brand">
+    <div class="brand-icon">🎓</div>
+    <div>
+      <h1>شبیه‌ساز آزمون</h1>
+      <p>با تمرین، بهتر از همیشه باش</p>
+    </div>
+  </div>
+
+  <div class="exam-name">آزمون جامع ریاضی 📄</div>
+
+  <div class="header-progress">
+    <small>پیشرفت آزمون</small>
+    <div class="progress-track">
+      <div class="progress-value" id="progressValue"></div>
+    </div>
+  </div>
+
+  <div class="timer">
+    <div class="timer-icon">⏱</div>
+    <div>
+      <strong id="timer">01:23:45</strong>
+      <small>زمان باقی‌مانده</small>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <aside class="sidebar">
+    <button class="nav-btn active">
+      <span class="nav-icon">⌂</span>
+      <span>آزمون</span>
+    </button>
+
+    <button class="nav-btn" onclick="showAnswers()">
+      <span class="nav-icon">▧</span>
+      <span>پاسخ‌نامه</span>
+    </button>
+
+    <button class="nav-btn" onclick="showAnalysis()">
+      <span class="nav-icon">▥</span>
+      <span>تحلیل آزمون</span>
+    </button>
+
+    <button class="nav-btn" onclick="alert('بخش تنظیمات در نسخه بعدی فعال می‌شود.')">
+      <span class="nav-icon">⚙</span>
+      <span>تنظیمات</span>
+    </button>
+
+    <button class="nav-btn" onclick="alert('برای خروج، صفحه را ببند.')">
+      <span class="nav-icon">⇥</span>
+      <span>خروج</span>
+    </button>
+
+    <div class="motivation">
+      <span>★</span>
+      هر سؤال،
+      <br>
+      یک قدم به سمت
+      <br>
+      موفقیت است...
+    </div>
+  </aside>
+
+  <section class="question-area">
+    <div class="question-top">
+      <div class="subject" id="subject">📐 ریاضی</div>
+      <div class="question-number" id="questionNumber">سؤال ۱ از ۲۰</div>
+    </div>
+
+    <div class="question-card">
+      <p class="question-text" id="questionText"></p>
+      <div id="questionImage"></div>
+      <div class="options" id="options"></div>
+    </div>
+
+    <div class="bottom-actions">
+      <button class="action-btn previous-btn" id="previousBtn" onclick="previousQuestion()">
+        ← سؤال قبل
+      </button>
+
+      <button class="mark-btn" id="markBtn" onclick="toggleMark()">
+        ♧
+        <br>
+        علامت‌گذاری
+      </button>
+
+      <button class="action-btn next-btn" id="nextBtn" onclick="nextQuestion()">
+        سؤال بعد →
+      </button>
+    </div>
+  </section>
+
+  <aside class="question-list">
+    <div class="list-title">
+      <span>فهرست سؤالات</span>
+      <span>▦</span>
+    </div>
+
+    <div class="grid-legend">
+      <div class="legend-item">
+        <span class="legend-dot dot-answered"></span>
+        پاسخ داده شده
+      </div>
+
+      <div class="legend-item">
+        <span class="legend-dot dot-current"></span>
+        در حال پاسخ
+      </div>
+
+      <div class="legend-item">
+        <span class="legend-dot dot-unanswered"></span>
+        بی‌پاسخ
+      </div>
+
+      <div class="legend-item">
+        <span class="legend-dot dot-marked"></span>
+        علامت‌گذاری شده
+      </div>
+    </div>
+
+    <div class="question-grid" id="questionGrid"></div>
+
+    <div class="list-actions">
+      <button class="list-action" onclick="markAll()">
+        ♧ علامت‌گذاری همه
+      </button>
+
+      <button class="list-action" onclick="clearAnswers()">
+        🗑 پاک کردن پاسخ‌ها
+      </button>
+
+      <button class="list-action finish-btn" onclick="finishExam()">
+        ➤ اتمام آزمون
+      </button>
+    </div>
+  </aside>
+
+</main>
+
+<footer class="footer">
+  <span>⭐ تلاش امروز، موفقیت فردا</span>
+  <span>شبیه‌ساز آزمون | نسخه ۱.۰</span>
+</footer>
 
 </div>
 
-
 <script>
+const questions = [
+  {
+    subject: "📐 ریاضی",
+    text: "اگر در مثلث ABC، نقاط D و E به ترتیب روی ضلع‌های AB و AC باشند و DE با BC موازی باشد، کدام گزینه درست است؟",
+    options: ["BC", "AB", "AC", "هیچ‌کدام"],
+    answer: 0
+  },
+  {
+    subject: "📐 ریاضی",
+    text: "حاصل عبارت زیر کدام است؟  2 + 3 × 4",
+    options: ["20", "14", "24", "10"],
+    answer: 1
+  },
+  {
+    subject: "⚡ فیزیک",
+    text: "یکای نیرو در دستگاه SI کدام است؟",
+    options: ["ژول", "وات", "نیوتن", "پاسکال"],
+    answer: 2
+  },
+  {
+    subject: "🧪 شیمی",
+    text: "کدام گاز حدود ۲۰ درصد حجم هوا را تشکیل می‌دهد؟",
+    options: ["نیتروژن", "اکسیژن", "کربن دی‌اکسید", "هیدروژن"],
+    answer: 1
+  },
+  {
+    subject: "📊 آمار",
+    text: "میانگین اعداد ۲، ۴، ۶ و ۸ برابر است با:",
+    options: ["۴", "۵", "۶", "۸"],
+    answer: 1
+  }
+];
 
-    /*
-    ==========================================
-    داده‌های آزمون
-    ==========================================
+let currentQuestion = 0;
+let selectedAnswers = new Array(questions.length).fill(null);
+let markedQuestions = new Array(questions.length).fill(false);
+let remainingSeconds = 1 * 60 * 60 + 23 * 60 + 45;
 
-    فعلاً برای تست محیط، دو سؤال نمونه داریم.
-    بعداً سؤال‌های واقعی آزمون اینجا قرار می‌گیرند.
-    */
+function renderQuestion() {
+  const question = questions[currentQuestion];
 
-    const questions = [
+  document.getElementById("subject").textContent = question.subject;
+  document.getElementById("questionNumber").textContent =
+    `سؤال ${currentQuestion + 1} از ${questions.length}`;
 
-        {
-            text: "نمونه سؤال ۱ آزمون",
-            options: [
-                "گزینه اول",
-                "گزینه دوم",
-                "گزینه سوم",
-                "گزینه چهارم"
-            ],
-            answer: 0
-        },
+  document.getElementById("questionText").textContent = question.text;
+  document.getElementById("questionImage").innerHTML = "";
 
-        {
-            text: "نمونه سؤال ۲ آزمون",
-            options: [
-                "گزینه اول",
-                "گزینه دوم",
-                "گزینه سوم",
-                "گزینه چهارم"
-            ],
-            answer: 1
-        }
+  const optionsContainer = document.getElementById("options");
+  optionsContainer.innerHTML = "";
 
-    ];
+  const letters = ["الف", "ب", "ج", "د"];
 
+  question.options.forEach((option, index) => {
+    const button = document.createElement("button");
+    button.className = "option";
 
-    /*
-    ==========================================
-    وضعیت آزمون
-    ==========================================
-    */
-
-    let currentQuestion = 0;
-
-    let answers = {};
-
-    let marked = new Set();
-
-    let timeLeft = 95 * 60;
-
-    let timerInterval = null;
-
-
-    /*
-    ==========================================
-    شروع آزمون
-    ==========================================
-    */
-
-    function startExam() {
-
-        document.getElementById("welcome").style.display = "none";
-
-        document.getElementById("exam").style.display = "block";
-
-        document.getElementById("result").style.display = "none";
-
-        currentQuestion = 0;
-
-        answers = {};
-
-        marked = new Set();
-
-        timeLeft = 95 * 60;
-
-        renderQuestion();
-
-        startTimer();
-
+    if (selectedAnswers[currentQuestion] === index) {
+      button.classList.add("selected");
     }
 
+    button.innerHTML = `
+      <span>${letters[index]}) ${option}</span>
+      <span class="option-letter">
+        ${selectedAnswers[currentQuestion] === index ? "✓" : ""}
+      </span>
+    `;
 
-    /*
-    ==========================================
-    نمایش سؤال
-    ==========================================
-    */
+    button.onclick = () => selectAnswer(index);
+    optionsContainer.appendChild(button);
+  });
 
-    function renderQuestion() {
+  document.getElementById("previousBtn").disabled = currentQuestion === 0;
+  document.getElementById("nextBtn").textContent =
+    currentQuestion === questions.length - 1 ? "پایان ←" : "سؤال بعد →";
 
-        const q = questions[currentQuestion];
+  const markBtn = document.getElementById("markBtn");
+  markBtn.classList.toggle("marked", markedQuestions[currentQuestion]);
 
-        document.getElementById("questionNumber").innerText =
-            "سؤال " +
-            toPersianNumber(currentQuestion + 1) +
-            " از " +
-            toPersianNumber(70);
+  updateProgress();
+  renderQuestionGrid();
+}
 
-        document.getElementById("questionText").innerText =
-            q.text;
+function selectAnswer(index) {
+  selectedAnswers[currentQuestion] = index;
+  renderQuestion();
+}
 
-        const optionsBox =
-            document.getElementById("options");
+function nextQuestion() {
+  if (currentQuestion < questions.length - 1) {
+    currentQuestion++;
+    renderQuestion();
+  } else {
+    finishExam();
+  }
+}
 
-        optionsBox.innerHTML = "";
+function previousQuestion() {
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    renderQuestion();
+  }
+}
 
-        q.options.forEach(
-            (option, index) => {
+function toggleMark() {
+  markedQuestions[currentQuestion] = !markedQuestions[currentQuestion];
+  renderQuestion();
+}
 
-                const button =
-                    document.createElement("button");
+function renderQuestionGrid() {
+  const grid = document.getElementById("questionGrid");
+  grid.innerHTML = "";
 
-                button.className = "option";
+  questions.forEach((question, index) => {
+    const button = document.createElement("button");
+    button.className = "grid-btn";
+    button.textContent = index + 1;
 
-                if (answers[currentQuestion] === index) {
-                    button.classList.add("selected");
-                }
-
-                button.innerHTML =
-                    `
-                    <div class="option-number">
-                        ${toPersianNumber(index + 1)}
-                    </div>
-
-                    <div class="option-text">
-                        ${option}
-                    </div>
-                    `;
-
-                button.onclick = () => {
-
-                    answers[currentQuestion] = index;
-
-                    renderQuestion();
-
-                };
-
-                optionsBox.appendChild(button);
-
-            }
-        );
-
-
-        updateStats();
-
+    if (selectedAnswers[index] !== null) {
+      button.classList.add("answered");
     }
 
-
-    /*
-    ==========================================
-    وضعیت آزمون
-    ==========================================
-    */
-
-    function updateStats() {
-
-        const answered =
-            Object.keys(answers).length;
-
-        document.getElementById("answered").innerText =
-            toPersianNumber(answered);
-
-
-        const progress =
-            ((currentQuestion + 1) / 70) * 100;
-
-        document.getElementById("progress").style.width =
-            Math.min(progress, 100) + "%";
-
-
-        const markButton =
-            document.getElementById("markButton");
-
-        if (marked.has(currentQuestion)) {
-
-            markButton.innerText =
-                "⭐ نشان‌شده";
-
-            markButton.classList.add("marked");
-
-        } else {
-
-            markButton.innerText =
-                "⭐ نشان‌گذاری";
-
-            markButton.classList.remove("marked");
-
-        }
-
+    if (markedQuestions[index]) {
+      button.classList.add("marked");
     }
 
-
-    /*
-    ==========================================
-    سؤال بعدی
-    ==========================================
-    */
-
-    function nextQuestion() {
-
-        if (
-            currentQuestion <
-            questions.length - 1
-        ) {
-
-            currentQuestion++;
-
-            renderQuestion();
-
-        } else {
-
-            finishExam();
-
-        }
-
+    if (index === currentQuestion) {
+      button.classList.add("current");
     }
 
-
-    /*
-    ==========================================
-    سؤال قبلی
-    ==========================================
-    */
-
-    function previousQuestion() {
-
-        if (currentQuestion > 0) {
-
-            currentQuestion--;
-
-            renderQuestion();
-
-        }
-
-    }
-
-
-    /*
-    ==========================================
-    نشان‌گذاری
-    ==========================================
-    */
-
-    function toggleMark() {
-
-        if (marked.has(currentQuestion)) {
-
-            marked.delete(currentQuestion);
-
-        } else {
-
-            marked.add(currentQuestion);
-
-        }
-
-        updateStats();
-
-    }
-
-
-    /*
-    ==========================================
-    حذف پاسخ
-    ==========================================
-    */
-
-    function clearAnswer() {
-
-        delete answers[currentQuestion];
-
-        renderQuestion();
-
-    }
-
-
-    /*
-    ==========================================
-    تایمر
-    ==========================================
-    */
-
-    function startTimer() {
-
-        clearInterval(timerInterval);
-
-        updateTimer();
-
-        timerInterval = setInterval(
-            () => {
-
-                timeLeft--;
-
-                updateTimer();
-
-                if (timeLeft <= 0) {
-
-                    clearInterval(timerInterval);
-
-                    finishExam();
-
-                }
-
-            },
-            1000
-        );
-
-    }
-
-
-    function updateTimer() {
-
-        if (timeLeft < 0) {
-            timeLeft = 0;
-        }
-
-        const minutes =
-            Math.floor(timeLeft / 60);
-
-        const seconds =
-            timeLeft % 60;
-
-        document.getElementById("timer").innerText =
-            toPersianNumber(
-                String(minutes).padStart(2, "0")
-            )
-            +
-            ":"
-            +
-            toPersianNumber(
-                String(seconds).padStart(2, "0")
-            );
-
-    }
-
-
-    /*
-    ==========================================
-    پایان آزمون
-    ==========================================
-    */
-
-    function finishExam() {
-
-        clearInterval(timerInterval);
-
-        let correct = 0;
-
-        questions.forEach(
-            (q, index) => {
-
-                if (
-                    answers[index] ===
-                    q.answer
-                ) {
-
-                    correct++;
-
-                }
-
-            }
-        );
-
-
-        const answered =
-            Object.keys(answers).length;
-
-        const wrong =
-            answered - correct;
-
-        const empty =
-            70 - answered;
-
-        const percent =
-            (correct / 70) * 100;
-
-
-        document.getElementById("exam").style.display =
-            "none";
-
-        document.getElementById("result").style.display =
-            "flex";
-
-
-        document.getElementById("resultCorrect").innerText =
-            toPersianNumber(correct);
-
-        document.getElementById("resultWrong").innerText =
-            toPersianNumber(wrong);
-
-        document.getElementById("resultEmpty").innerText =
-            toPersianNumber(empty);
-
-        document.getElementById("resultPercent").innerText =
-            toPersianNumber(
-                Math.round(percent)
-            ) + "٪";
-
-    }
-
-
-    /*
-    ==========================================
-    فهرست سؤالات
-    ==========================================
-    */
-
-    function showQuestionList() {
-
-        let message =
-            "شماره سؤال فعلی: " +
-            (currentQuestion + 1) +
-            "\n\n";
-
-        message +=
-            "این بخش بعداً به فهرست کامل ۷۰ سؤال متصل می‌شود.";
-
-        alert(message);
-
-    }
-
-
-    /*
-    ==========================================
-    دانلود سوالات
-    ==========================================
-    */
-
-    function downloadQuestions() {
-
-        /*
-        آدرس فایل واقعی سوالات را بعداً اینجا قرار می‌دهیم.
-        */
-
-        alert(
-            "📥 فایل سوالات بعد از اتصال فایل آزمون فعال می‌شود."
-        );
-
-    }
-
-
-    /*
-    ==========================================
-    دانلود پاسخنامه
-    ==========================================
-    */
-
-    function downloadAnswers() {
-
-        /*
-        آدرس فایل واقعی پاسخنامه را بعداً اینجا قرار می‌دهیم.
-        */
-
-        alert(
-            "📥 فایل پاسخنامه بعد از قرار دادن پاسخنامه واقعی فعال می‌شود."
-        );
-
-    }
-
-
-    /*
-    ==========================================
-    تبدیل اعداد انگلیسی به فارسی
-    ==========================================
-    */
-
-    function toPersianNumber(value) {
-
-        const numbers = [
-            "۰",
-            "۱",
-            "۲",
-            "۳",
-            "۴",
-            "۵",
-            "۶",
-            "۷",
-            "۸",
-            "۹"
-        ];
-
-        return String(value).replace(
-            /\d/g,
-            digit => numbers[digit]
-        );
-
-    }
-
+    button.onclick = () => {
+      currentQuestion = index;
+      renderQuestion();
+    };
+
+    grid.appendChild(button);
+  });
+}
+
+function updateProgress() {
+  const answered = selectedAnswers.filter(
+    answer => answer !== null
+  ).length;
+
+  const percentage = (answered / questions.length) * 100;
+  document.getElementById("progressValue").style.width = percentage + "%";
+}
+
+function markAll() {
+  markedQuestions = markedQuestions.map(() => true);
+  renderQuestion();
+}
+
+function clearAnswers() {
+  if (confirm("آیا از پاک کردن همه پاسخ‌ها مطمئنی؟")) {
+    selectedAnswers = new Array(questions.length).fill(null);
+    renderQuestion();
+  }
+}
+
+function finishExam() {
+  const answered = selectedAnswers.filter(
+    answer => answer !== null
+  ).length;
+
+  const unanswered = questions.length - answered;
+
+  alert(
+    `آزمون به پایان رسید.\n\n` +
+    `تعداد کل سؤالات: ${questions.length}\n` +
+    `پاسخ داده‌شده: ${answered}\n` +
+    `بی‌پاسخ: ${unanswered}`
+  );
+}
+
+function showAnswers() {
+  alert("پاسخ‌نامه پس از پایان آزمون نمایش داده می‌شود.");
+}
+
+function showAnalysis() {
+  const answered = selectedAnswers.filter(
+    answer => answer !== null
+  ).length;
+
+  alert(`تعداد سؤالات پاسخ داده‌شده: ${answered}`);
+}
+
+function updateTimer() {
+  if (remainingSeconds <= 0) {
+    document.getElementById("timer").textContent = "00:00:00";
+    finishExam();
+    return;
+  }
+
+  remainingSeconds--;
+
+  const hours = Math.floor(remainingSeconds / 3600);
+  const minutes = Math.floor((remainingSeconds % 3600) / 60);
+  const seconds = remainingSeconds % 60;
+
+  document.getElementById("timer").textContent =
+    `${String(hours).padStart(2, "0")}:` +
+    `${String(minutes).padStart(2, "0")}:` +
+    `${String(seconds).padStart(2, "0")}`;
+}
+
+renderQuestion();
+setInterval(updateTimer, 1000);
 </script>
 
 </body>
-</html>0
+</html>
 
