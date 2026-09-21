@@ -798,7 +798,7 @@ const questions = [
 let currentQuestion = 0;
 let selectedAnswers = new Array(questions.length).fill(null);
 let markedQuestions = new Array(questions.length).fill(false);
-let remainingSeconds = 1 * 60 * 60 + 23 * 60 + 45;
+let remainingSeconds = questions.length * 90;
 
 function renderQuestion() {
   const question = questions[currentQuestion];
