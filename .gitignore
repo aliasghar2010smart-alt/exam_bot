@@ -1,0 +1,7 @@
+.env
+__pycache__/
+*.pyc
+bot.p
+index_backup.html
+index_before_connection.html
+questions_generated.js

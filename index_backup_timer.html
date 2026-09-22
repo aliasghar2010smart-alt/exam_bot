@@ -798,7 +798,7 @@ const questions = [
 let currentQuestion = 0;
 let selectedAnswers = new Array(questions.length).fill(null);
 let markedQuestions = new Array(questions.length).fill(false);
-let remainingSeconds = questions.length * 90;
+let remainingSeconds = 1 * 60 * 60 + 23 * 60 + 45;
 
 function renderQuestion() {
   const question = questions[currentQuestion];
@@ -807,16 +807,8 @@ function renderQuestion() {
   document.getElementById("questionNumber").textContent =
     `سؤال ${currentQuestion + 1} از ${questions.length}`;
 
-  const imageBox = document.getElementById("questionImage");
-  const imageNumber = currentQuestion + 1;
-
-  if (imageNumber >= 8 && imageNumber <= 12) {
-    document.getElementById("questionText").textContent = "";
-    imageBox.innerHTML = `<img src="images/questions/question-${String(imageNumber).padStart(2, "0")}.png" style="width:100%;max-width:900px;">`;
-  } else {
-    document.getElementById("questionText").textContent = question.text;
-    imageBox.innerHTML = "";
-  }
+  document.getElementById("questionText").textContent = question.text;
+  document.getElementById("questionImage").innerHTML = "";
 
   const optionsContainer = document.getElementById("options");
   optionsContainer.innerHTML = "";
