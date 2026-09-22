@@ -917,7 +917,24 @@ function finishExam() {
 }
 
 function showAnswers() {
-  window.open("answer_key.pdf", "_blank");
+  let key = "کلید خالی پاسخ آزمون\n\n";
+
+  for (let i = 0; i < questions.length; i++) {
+    key += (i + 1) + ". ☐\n";
+  }
+
+  const blob = new Blob([key], {
+    type: "text/plain;charset=utf-8"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+
+  a.href = url;
+  a.download = "answer_key_blank.txt";
+  a.click();
+
+  URL.revokeObjectURL(url);
 }
 
 function showAnalysis() {
