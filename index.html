@@ -795,7 +795,7 @@ function renderQuestion() {
   const optionsContainer = document.getElementById("options");
   optionsContainer.innerHTML = "";
 
-  const letters = ["الف", "ب", "ج", "د"];
+  const letters = ["", "", "", ""];
 
   question.options.forEach((option, index) => {
     const button = document.createElement("button");
@@ -806,7 +806,7 @@ function renderQuestion() {
     }
 
     button.innerHTML = `
-      <span>${letters[index]}) ${option}</span>
+      <span>${option}</span>
       <span class="option-letter">
         ${selectedAnswers[currentQuestion] === index ? "✓" : ""}
       </span>
