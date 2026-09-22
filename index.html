@@ -763,36 +763,11 @@ button:disabled {
 
 <script>
 const questions = [
-  {
-    subject: "📐 ریاضی",
-    text: "اگر در مثلث ABC، نقاط D و E به ترتیب روی ضلع‌های AB و AC باشند و DE با BC موازی باشد، کدام گزینه درست است؟",
-    options: ["BC", "AB", "AC", "هیچ‌کدام"],
-    answer: 0
-  },
-  {
-    subject: "📐 ریاضی",
-    text: "حاصل عبارت زیر کدام است؟  2 + 3 × 4",
-    options: ["20", "14", "24", "10"],
-    answer: 1
-  },
-  {
-    subject: "⚡ فیزیک",
-    text: "یکای نیرو در دستگاه SI کدام است؟",
-    options: ["ژول", "وات", "نیوتن", "پاسکال"],
-    answer: 2
-  },
-  {
-    subject: "🧪 شیمی",
-    text: "کدام گاز حدود ۲۰ درصد حجم هوا را تشکیل می‌دهد؟",
-    options: ["نیتروژن", "اکسیژن", "کربن دی‌اکسید", "هیدروژن"],
-    answer: 1
-  },
-  {
-    subject: "📊 آمار",
-    text: "میانگین اعداد ۲، ۴، ۶ و ۸ برابر است با:",
-    options: ["۴", "۵", "۶", "۸"],
-    answer: 1
-  }
+  { subject: "📐 ریاضی", text: "", options: ["۱", "۲", "۳", "۴"], answer: -1, image: "question-08.png" },
+  { subject: "📐 ریاضی", text: "", options: ["۱", "۲", "۳", "۴"], answer: -1, image: "question-09.png" },
+  { subject: "⚡ فیزیک", text: "", options: ["۱", "۲", "۳", "۴"], answer: -1, image: "question-10.png" },
+  { subject: "🧪 شیمی", text: "", options: ["۱", "۲", "۳", "۴"], answer: -1, image: "question-11.png" },
+  { subject: "📊 آمار", text: "", options: ["۱", "۲", "۳", "۴"], answer: -1, image: "question-12.png" }
 ];
 
 let currentQuestion = 0;
@@ -808,11 +783,10 @@ function renderQuestion() {
     `سؤال ${currentQuestion + 1} از ${questions.length}`;
 
   const imageBox = document.getElementById("questionImage");
-  const imageNumber = currentQuestion + 1;
 
-  if (imageNumber >= 8 && imageNumber <= 12) {
+  if (question.image) {
     document.getElementById("questionText").textContent = "";
-    imageBox.innerHTML = `<img src="images/questions/question-${String(imageNumber).padStart(2, "0")}.png" style="width:100%;max-width:900px;">`;
+    imageBox.innerHTML = `<img src="images/questions/${question.image}" style="width:100%;max-width:900px;">`;
   } else {
     document.getElementById("questionText").textContent = question.text;
     imageBox.innerHTML = "";
